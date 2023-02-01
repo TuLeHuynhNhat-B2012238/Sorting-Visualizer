@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorting app</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Mode component -->
+      <div class="modes-container">
+        <button class="bubble">Bubble sort</button>
+        <button class="selection">Selection sort</button>
+        <button class="insertion">Insert sort</button>
+        <button class="quick">Quick sort</button>
+        <button class="heap">Heap sort</button>
+        <button class="merge">Merge sort</button>
+        <div class="speed-item">
+          <label for="speed">Speed</label>
+          <input type="range" class="speed" value="0" min="0" max="2000" step="1"></>
+        </div>
+        <a class="download" href="" download="array.txt">Download sorted array</a>
+      </div>
+      <!-- Bar component -->
+      <div class="bars-container">
+      </div>
+      <!-- Type component -->
+      <div class="types-container">
+        <!-- type 1 -->
+        <div class="type-1">
+          <h3>Create random array</h3>
+          <div class="type-1-body">
+            <div>
+              <label for="number-element-input">Number element</label>
+              <input
+                class="number-element-input"
+                type="number"
+                placeholder="At least 1 element"
+                value="10"
+              />
+            </div>
+            <div>
+              <label for="min-range-input">Min range</label>
+              <input class="min-range-input" type="number" placeholder="Default 0 (min 0)" />
+            </div>
+            <div>
+              <label for="max-range-input">Max range</label>
+              <input
+                class="max-range-input"
+                type="number"
+                placeholder="Default 200 (max 268)"
+                value="200"
+              />
+            </div>
+            <button class="random-btn">Random</button>
+          </div>
+        </div>
+        <!-- type 2 -->
+        <div class="type-2">
+          <h3>Read array from file</h3>
+          <input class="file-input" type="file" accept="text/plain" />
+        </div>
+        <!-- type 3 -->
+        <div class="type-3">
+          <h3>Create your array</h3>
+          <textarea class="create-array-input" name="" cols="50" rows="3"></textarea>
+          <button class="create-array-btn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./main.js"></script>
+</html>

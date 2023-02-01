@@ -1,0 +1,139 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  color: #b3b3b3;
+  font-size: 14px;
+}
+
+h3 {
+  margin: 12px 0;
+}
+
+button {
+  color: azure;
+  border: none;
+  padding: 8px;
+  background-color: #4d4df9;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+button:disabled {
+  background-color: transparent;
+  color: #f0ffff4d;
+}
+
+button:hover {
+  background-color: #7979fb;
+  transition: background-color 0.2s ease;
+}
+
+input {
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+.type-1-body label {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+}
+.download {
+  pointer-events: none;
+  color: #f0ffff4d;
+  text-decoration: none;
+}
+
+.speed-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.container {
+  min-height: 100vh;
+  min-width: 100vw;
+  /*  */
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
+  background-color: #343a40;
+  display: flex;
+  flex-direction: column;
+}
+
+.modes-container {
+  height: 10vh;
+  min-width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+}
+
+.bars-container {
+  min-height: 100vh;
+  height: fit-content;
+  width: 100%;
+  background-color: rgb(106, 140, 244);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  padding: 11vh 1% 30vh 1%;
+  overflow: auto;
+}
+
+.types-container {
+  height: 25vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: #343a40;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.create-array-btn,
+.random-btn {
+  display: inline-block;
+  width: 100%;
+}
+
+.bar-item {
+  width: fit-content;
+  min-width: 1vw;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
+  margin-right: 1px;
+}
+.bar-header {
+  background-color: red;
+  transition: height 0.1s ease, background-color 0.1s ease;
+  /* transition: height 0.1s ease; */
+}
+.bar-number {
+  visibility: hidden;
+  color: #343a40;
+  font-weight: 600;
+}

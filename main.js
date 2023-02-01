@@ -22,7 +22,6 @@ function disableAllActivity() {
   document.getElementsByClassName('insertion')[0].disabled = true;
   document.getElementsByClassName('quick')[0].disabled = true;
   document.getElementsByClassName('heap')[0].disabled = true;
-  document.getElementsByClassName('merge')[0].disabled = true;
   document.getElementsByClassName('random-btn')[0].disabled = true;
   document.getElementsByClassName('file-input')[0].disabled = true;
   document.getElementsByClassName('create-array-input')[0].disabled = true;
@@ -38,7 +37,6 @@ function enableAllActivity() {
   document.getElementsByClassName('insertion')[0].disabled = false;
   document.getElementsByClassName('quick')[0].disabled = false;
   document.getElementsByClassName('heap')[0].disabled = false;
-  document.getElementsByClassName('merge')[0].disabled = false;
   document.getElementsByClassName('random-btn')[0].disabled = false;
   document.getElementsByClassName('file-input')[0].disabled = false;
   document.getElementsByClassName('create-array-input')[0].disabled = false;

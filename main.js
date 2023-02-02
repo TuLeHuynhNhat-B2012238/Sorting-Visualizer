@@ -4,7 +4,7 @@ let speed = document.getElementsByClassName('speed')[0]; // speed input to contr
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
-// disable download array button while sorting
+// Disable download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
   document.getElementsByClassName('download')[0].style.color = '#f0ffff4d';
@@ -15,7 +15,7 @@ function enableDownloadArray() {
   downloadEl.style.color = 'azure';
   downloadEl.setAttribute('href', 'data:text/plain;charset=utf-11,' + encodeURIComponent(array));
 }
-// disable button and input while sort
+// Disable button and input while sort
 function disableAllActivity() {
   document.getElementsByClassName('bubble')[0].disabled = true;
   document.getElementsByClassName('selection')[0].disabled = true;
@@ -30,7 +30,7 @@ function disableAllActivity() {
   document.getElementsByClassName('min-range-input')[0].disabled = true;
   document.getElementsByClassName('max-range-input')[0].disabled = true;
 }
-// enable button and input while sort
+// Enable button and input while sort
 function enableAllActivity() {
   document.getElementsByClassName('bubble')[0].disabled = false;
   document.getElementsByClassName('selection')[0].disabled = false;

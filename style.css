@@ -130,9 +130,10 @@ textarea {
 .bar-header {
   background-color: red;
   transition: height 0.1s ease, background-color 0.1s ease;
-  /* transition: height 0.1s ease; */
 }
+
 .bar-number {
+  padding: 0 2px;
   visibility: hidden;
   color: #343a40;
   font-weight: 600;

@@ -1,8 +1,8 @@
-// Common variable
-let bars = document.getElementsByClassName('bars-container');
-let speed = document.getElementsByClassName('speed')[0];
-let array = [];
-let delayTime = 2000; // default speed sort
+// Global variable
+let bars = document.getElementsByClassName('bars-container'); // bars element contain list bar-item, bar-item represent a element in array
+let speed = document.getElementsByClassName('speed')[0]; // speed input to control sorting speed
+let array = []; // store list number of element to sort
+let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
 // Download file when sorted
 function disableDownloadArray() {

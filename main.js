@@ -4,7 +4,7 @@ let speed = document.getElementsByClassName('speed')[0]; // speed input to contr
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
-// Download file when sorted
+// disable download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
   document.getElementsByClassName('download')[0].style.color = '#f0ffff4d';
@@ -51,10 +51,10 @@ speed.addEventListener('input', (e) => {
 });
 
 // Create random array variable
-let randomBtn = document.getElementsByClassName('random-btn')[0];
-let minRange = document.getElementsByClassName('min-range-input')[0];
-let maxRange = document.getElementsByClassName('max-range-input')[0];
-let numElement = document.getElementsByClassName('number-element-input')[0];
+let randomBtn = document.getElementsByClassName('random-btn')[0]; // used to create a random array element
+let minRange = document.getElementsByClassName('min-range-input')[0]; // used to input an min range element before click random button
+let maxRange = document.getElementsByClassName('max-range-input')[0]; // used to input an max range element before click random button
+let numElement = document.getElementsByClassName('number-element-input')[0]; // use to input an length of array before click random button
 
 // Update array to bars element
 function renderBars(array) {
@@ -120,7 +120,7 @@ randomBtn.addEventListener('click', () => {
 });
 
 // Read file variable
-let fileInput = document.getElementsByClassName('file-input')[0];
+let fileInput = document.getElementsByClassName('file-input')[0]; // used to read files for creating an array
 let contentFile;
 
 // Type 2 Read file into an array handler
@@ -163,8 +163,8 @@ fileInput.addEventListener('change', (e) => {
 });
 
 // Type 3 Create your array variable
-let createArrayInput = document.getElementsByClassName('create-array-input')[0];
-let createArrayBtn = document.getElementsByClassName('create-array-btn')[0];
+let createArrayInput = document.getElementsByClassName('create-array-input')[0]; // used to get a array input from user
+let createArrayBtn = document.getElementsByClassName('create-array-btn')[0]; // used to create an array after user input
 
 // Create your array handler
 createArrayBtn.addEventListener('click', () => {

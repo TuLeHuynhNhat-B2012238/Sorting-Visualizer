@@ -124,7 +124,6 @@ randomBtn.addEventListener('click', () => {
 // Type input 2 Read file into an array handler
 // Read file variables
 let fileInput = document.getElementsByClassName('file-input')[0]; // use for read files for creating an array
-let contentFile;
 
 // Use for check valid array or check input is not empty when read file (type input 2) and read input's user (type input 3)
 function checkArrayNumberAndCheckEmptyArray(array) {
@@ -147,7 +146,7 @@ fileInput.addEventListener('change', (e) => {
   });
 
   reader.addEventListener('load', (e) => {
-    contentFile = e.target.result;
+    let contentFile = e.target.result;
     console.log(contentFile);
 
     // Check content file only contain number

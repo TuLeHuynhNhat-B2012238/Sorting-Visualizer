@@ -1,21 +1,22 @@
-// Global variable
+// Global variables
 let bars = document.getElementsByClassName('bars-container'); // bars element contain list bar-item, bar-item represent a element in array
 let speed = document.getElementsByClassName('speed')[0]; // speed input to control sorting speed
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
-// Disable download array button while sorting
+// Disable the download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
   document.getElementsByClassName('download')[0].style.color = '#f0ffff4d';
 }
+// Enable the download array button after sorting
 function enableDownloadArray() {
   let downloadEl = document.getElementsByClassName('download')[0];
   downloadEl.style.pointerEvents = 'auto';
   downloadEl.style.color = 'azure';
   downloadEl.setAttribute('href', 'data:text/plain;charset=utf-11,' + encodeURIComponent(array));
 }
-// Disable button and input while sort
+// Disable buttons and inputs while sorting
 function disableAllActivity() {
   document.getElementsByClassName('bubble')[0].disabled = true;
   document.getElementsByClassName('selection')[0].disabled = true;
@@ -30,7 +31,7 @@ function disableAllActivity() {
   document.getElementsByClassName('min-range-input')[0].disabled = true;
   document.getElementsByClassName('max-range-input')[0].disabled = true;
 }
-// Enable button and input while sort
+// Enable buttons and inputs after sorting
 function enableAllActivity() {
   document.getElementsByClassName('bubble')[0].disabled = false;
   document.getElementsByClassName('selection')[0].disabled = false;
@@ -45,18 +46,18 @@ function enableAllActivity() {
   document.getElementsByClassName('min-range-input')[0].disabled = false;
   document.getElementsByClassName('max-range-input')[0].disabled = false;
 }
-// Speed sort
+// Used to get a delayTime value when user drag speed bar
 speed.addEventListener('input', (e) => {
   delayTime = 2000 - e.target.value;
 });
 
-// Create random array variable
+// Create random array variables
 let randomBtn = document.getElementsByClassName('random-btn')[0]; // used to create a random array element
 let minRange = document.getElementsByClassName('min-range-input')[0]; // used to input an min range element before click random button
 let maxRange = document.getElementsByClassName('max-range-input')[0]; // used to input an max range element before click random button
 let numElement = document.getElementsByClassName('number-element-input')[0]; // use to input an length of array before click random button
 
-// Update array to bars element
+// Used to display an array element on bars element after create an array
 function renderBars(array) {
   bars[0].innerHTML = '';
 
@@ -87,7 +88,8 @@ function renderBars(array) {
   console.log(array);
 }
 
-// Type 1 Create reandom array handler
+// Type input 1 Create random array handler
+// Used to create an random array with length, min range and maxrange
 function createRandomArray(numElement, minRange, maxRange) {
   if (maxRange == null || minRange == null || !numElement) {
     console.log(minRange);
@@ -107,8 +109,8 @@ function createRandomArray(numElement, minRange, maxRange) {
   return array;
 }
 
+// Used to excute create an array every time user click random button
 randomBtn.addEventListener('click', () => {
-  // Handling event when click the random button
   disableDownloadArray();
   const numElementValue = Math.round(numElement.value * 1);
   const minRangeValue = Math.round(minRange.value * 1) || 0;
@@ -119,11 +121,12 @@ randomBtn.addEventListener('click', () => {
   renderBars(array);
 });
 
-// Read file variable
+// Type input 2 Read file into an array handler
+// Read file variables
 let fileInput = document.getElementsByClassName('file-input')[0]; // used to read files for creating an array
 let contentFile;
 
-// Type 2 Read file into an array handler
+// Used to check valid array or check input is not empty when read file (type input 2) and read input's user (type input 3)
 function checkArrayNumberAndCheckEmptyArray(array) {
   if (array.length == 0) {
     return false;
@@ -132,6 +135,8 @@ function checkArrayNumberAndCheckEmptyArray(array) {
     return !isNaN(parseInt(el));
   });
 }
+
+// Used to read text from file every time open by user
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -162,7 +167,8 @@ fileInput.addEventListener('change', (e) => {
   reader.readAsText(file);
 });
 
-// Type 3 Create your array variable
+// Type input 3 create your array
+// Create your array variables
 let createArrayInput = document.getElementsByClassName('create-array-input')[0]; // used to get a array input from user
 let createArrayBtn = document.getElementsByClassName('create-array-btn')[0]; // used to create an array after user input
 

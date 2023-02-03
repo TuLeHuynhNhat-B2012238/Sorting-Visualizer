@@ -188,7 +188,7 @@ createArrayBtn.addEventListener('click', () => {
   }
 });
 
-// Sort array handler
+// Use for delay ms time when call it
 function delayTimer(ms) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -244,6 +244,8 @@ async function bubbleSort(array) {
   }
   return array;
 }
+
+// Use for sort array by bubble sort every time user click bubble sort button
 document.getElementsByClassName('bubble')[0].addEventListener('click', () => {
   if (!checkArrayNumberAndCheckEmptyArray(array)) {
     alert('Please create your array!');
@@ -306,6 +308,7 @@ async function selectionSort(array) {
   return array;
 }
 
+// Use for sort array by selection sort every time user click selection sort button
 document.getElementsByClassName('selection')[0].addEventListener('click', () => {
   if (!checkArrayNumberAndCheckEmptyArray(array)) {
     alert('Please create your array!');
@@ -350,6 +353,7 @@ async function insertionSort(array) {
   return array;
 }
 
+// Use for sort array by insertion sort every time user click insertion sort button
 document.getElementsByClassName('insertion')[0].addEventListener('click', () => {
   if (!checkArrayNumberAndCheckEmptyArray(array)) {
     alert('Please create your array!');
@@ -365,7 +369,7 @@ document.getElementsByClassName('insertion')[0].addEventListener('click', () => 
 });
 
 // Quick sort
-// Find bigger first element
+// Find bigger first element in array
 function findPivot(array, i, j) {
   let k = i + 1;
   let firstElement = array[i];
@@ -388,6 +392,7 @@ function findPivot(array, i, j) {
   }
 }
 
+// Partition an array
 async function partition(array, i, j, pivot, pivotIndex) {
   let L = i,
     R = j;
@@ -454,6 +459,7 @@ async function partition(array, i, j, pivot, pivotIndex) {
   return L;
 }
 
+// Main quick sort function
 async function quickSort(array, i, j) {
   let pivotIndex = findPivot(array, i, j);
   let pivotValue;
@@ -481,6 +487,7 @@ async function quickSort(array, i, j) {
   return array;
 }
 
+// Use for sort array by quick sort every time user click quick sort button
 document.getElementsByClassName('quick')[0].addEventListener('click', () => {
   if (!checkArrayNumberAndCheckEmptyArray(array)) {
     alert('Please create your array!');
@@ -598,6 +605,8 @@ async function pushDown(array, first, last) {
     }
   }
 }
+
+// Main heap sort function
 async function heapSort(array) {
   const lastParentNode = Math.floor((array.length - 2) / 2);
   let barNumber = document.getElementsByClassName('bar-number');
@@ -648,6 +657,7 @@ async function heapSort(array) {
   return array;
 }
 
+// Use for sort array by heap sort every time user click heap sort button
 document.getElementsByClassName('heap')[0].addEventListener('click', () => {
   if (!checkArrayNumberAndCheckEmptyArray(array)) {
     alert('Please create your array!');

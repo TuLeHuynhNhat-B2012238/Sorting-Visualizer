@@ -92,7 +92,6 @@ function renderBars(array) {
 // Use for create an random array with length, min range and maxrange
 function createRandomArray(numElement, minRange, maxRange) {
   if (maxRange == null || minRange == null || !numElement) {
-    console.log(minRange);
     alert('Max range, min range and num element is require');
     return array;
   }
@@ -147,7 +146,6 @@ fileInput.addEventListener('change', (e) => {
 
   reader.addEventListener('load', (e) => {
     let contentFile = e.target.result;
-    console.log(contentFile);
 
     // Check content file only contain number
     if (!checkArrayNumberAndCheckEmptyArray(contentFile.split(' '))) {
@@ -378,15 +376,12 @@ function findPivot(array, i, j) {
   }
 
   if (k > j) {
-    console.log(-1);
     return -1;
   } // If array not any element bigger return -1
 
   if (array[k] > firstElement) {
-    console.log(k);
     return k;
   } else {
-    console.log(i);
     return i;
   }
 }
@@ -503,7 +498,6 @@ document.getElementsByClassName('quick')[0].addEventListener('click', () => {
 
 // Heap sort
 async function pushDown(array, first, last) {
-  console.log(first, Math.floor((last - 1) / 2));
   let r = first;
   let left;
   let right;

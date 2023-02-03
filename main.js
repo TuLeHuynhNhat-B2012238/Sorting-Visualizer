@@ -508,7 +508,7 @@ async function pushDown(array, first, last) {
     left = r * 2 + 1;
     right = r * 2 + 2;
     if (last == 2 * r + 1) {
-      if (array[r] > array[last]) {
+      if (array[r] < array[last]) {
         barHeader[r].style.backgroundColor = 'yellow';
         barHeader[last].style.backgroundColor = 'yellow';
         await delayTimer(delayTime);
@@ -539,8 +539,8 @@ async function pushDown(array, first, last) {
 
       barHeader[r].style.backgroundColor = 'red';
 
-      if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
-    } else if (array[r] > array[left] && array[left] <= array[right]) {
+      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+    } else if (array[r] < array[left] && array[left] >= array[right]) {
       barHeader[r].style.backgroundColor = 'yellow';
       barHeader[left].style.backgroundColor = 'yellow';
       await delayTimer(delayTime);
@@ -562,8 +562,8 @@ async function pushDown(array, first, last) {
       await delayTimer(delayTime);
 
       barHeader[r].style.backgroundColor = 'red';
-      if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
-    } else if (array[r] > array[right] && array[left] > array[right]) {
+      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+    } else if (array[r] < array[right] && array[left] < array[right]) {
       barHeader[r].style.backgroundColor = 'yellow';
       barHeader[right].style.backgroundColor = 'yellow';
       await delayTimer(delayTime);
@@ -586,7 +586,7 @@ async function pushDown(array, first, last) {
 
       barHeader[r].style.backgroundColor = 'red';
 
-      if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
     } else {
       barHeader[r].style.backgroundColor = 'red';
       r = last;

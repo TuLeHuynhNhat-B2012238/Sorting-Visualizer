@@ -140,3 +140,8 @@ textarea {
   color: #343a40;
   font-weight: 600;
 }
+.zoom-btn {
+  position: absolute;
+  top: 11vh;
+  right: 3%;
+}

@@ -3,7 +3,56 @@ let bars = document.getElementsByClassName('bars-container'); // bars element co
 let speed = document.getElementsByClassName('speed')[0]; // speed input to control sorting speed
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
+let ratioHeight = 0.5;
+let ratioWidth = 14;
 
+function arraySortedOrNot(arr, n) {
+  if (n == 1 || n == 0) return 1;
+
+  if (arr[n - 1] < arr[n - 2]) return 0;
+  return arraySortedOrNot(arr, n - 1);
+}
+
+function disableZoomIn() {
+  document.getElementsByClassName('zoom-in')[0].disabled = true;
+}
+function disableZoomOut() {
+  document.getElementsByClassName('zoom-out')[0].disabled = true;
+}
+function enableZoomIn() {
+  if (ratioHeight < 2 && ratioWidth < 42)
+    document.getElementsByClassName('zoom-in')[0].disabled = false;
+}
+function enableZoomOut() {
+  if (ratioHeight != 0.5 && ratioWidth != 14)
+    document.getElementsByClassName('zoom-out')[0].disabled = false;
+}
+document.getElementsByClassName('zoom-in')[0].addEventListener('click', () => {
+  ratioHeight += 0.5;
+  ratioWidth += 8;
+  renderBars(array);
+  if (ratioHeight >= 2 || ratioWidth >= 42) {
+    disableZoomIn();
+    return;
+  }
+});
+
+document.getElementsByClassName('zoom-out')[0].addEventListener('click', () => {
+  ratioHeight -= 0.5;
+  ratioWidth -= 8;
+  renderBars(array);
+  if (ratioHeight == 0.5 || ratioWidth == 14) {
+    disableZoomOut();
+    return;
+  }
+});
+document.getElementsByClassName('default')[0].addEventListener('click', () => {
+  if (array.length == 0) return;
+  ratioHeight = 0.5;
+  ratioWidth = 14;
+  renderBars(array);
+  disableZoomOut();
+});
 // Disable the download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
@@ -30,6 +79,9 @@ function disableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = true;
   document.getElementsByClassName('min-range-input')[0].disabled = true;
   document.getElementsByClassName('max-range-input')[0].disabled = true;
+  document.getElementsByClassName('default')[0].disabled = true;
+  disableZoomIn();
+  disableZoomOut();
 }
 // Enable buttons and inputs after sorting
 function enableAllActivity() {
@@ -45,6 +97,9 @@ function enableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = false;
   document.getElementsByClassName('min-range-input')[0].disabled = false;
   document.getElementsByClassName('max-range-input')[0].disabled = false;
+  document.getElementsByClassName('default')[0].disabled = false;
+  enableZoomIn();
+  enableZoomOut();
 }
 // Use for get a delayTime value when user drag speed bar
 speed.addEventListener('input', (e) => {
@@ -70,8 +125,11 @@ function renderBars(array) {
     barHeader.className = 'bar-header';
     barNumber.className = 'bar-number';
 
-    barHeader.style.height = `${array[i] / 10 + 0.2}em`;
+    // barHeader.style.height = `${array[i] / 10 + ratioHeight}em`;
+    barHeader.style.height = `${(array[i] / 10 + 1) * ratioHeight}em`;
     barNumber.innerHTML = array[i];
+    barNumber.style.fontSize = `${ratioWidth}px`;
+    if (arraySortedOrNot(array, array.length)) barHeader.style.backgroundColor = 'green';
 
     barHeader.addEventListener('mouseover', function () {
       barNumber.style.visibility = 'visible';
@@ -85,6 +143,8 @@ function renderBars(array) {
 
     bars[0].appendChild(barItem);
   }
+  enableZoomIn();
+  enableZoomOut();
   console.log(array);
 }
 
@@ -214,8 +274,8 @@ async function bubbleSort(array) {
       if (array[j] > array[j + 1]) {
         [array[j], array[j + 1]] = [array[j + 1], array[j]];
 
-        barHeaderj.style.height = `${array[j] / 10 + 0.2}em`;
-        barHeaderNextj.style.height = `${array[j + 1] / 10 + 0.2}em`;
+        barHeaderj.style.height = `${(array[j] / 10 + 1) * ratioHeight}em`;
+        barHeaderNextj.style.height = `${(array[j + 1] / 10 + 1) * ratioHeight}em`;
         barNumberj.innerHTML = array[j];
         barNumberNextj.innerHTML = array[j + 1];
 
@@ -295,8 +355,8 @@ async function selectionSort(array) {
 
       barNumber[i].innerHTML = array[i];
       barNumber[minIndex].innerHTML = array[minIndex];
-      barHeader[i].style.height = `${array[i] / 10 + 0.2}em`;
-      barHeader[minIndex].style.height = `${array[minIndex] / 10 + 0.2}em`;
+      barHeader[i].style.height = `${(array[i] / 10 + 1) * ratioHeight}em`;
+      barHeader[minIndex].style.height = `${(array[minIndex] / 10 + 1) * ratioHeight}em`;
 
       barHeader[minIndex].style.backgroundColor = 'red';
     }
@@ -338,8 +398,8 @@ async function insertionSort(array) {
 
       barNumber[j].innerHTML = array[j];
       barNumber[j - 1].innerHTML = array[j - 1];
-      barHeader[j].style.height = `${array[j] / 10 + 0.2}em`;
-      barHeader[j - 1].style.height = `${array[j - 1] / 10 + 0.2}em`;
+      barHeader[j].style.height = `${(array[j] / 10 + 1) * ratioHeight}em`;
+      barHeader[j - 1].style.height = `${(array[j - 1] / 10 + 1) * ratioHeight}em`;
       barHeader[j].style.backgroundColor = 'green';
 
       j--;
@@ -418,8 +478,8 @@ async function partition(array, i, j, pivot, pivotIndex) {
       await delayTimer(delayTime);
 
       [array[L], array[R]] = [array[R], array[L]];
-      barHeader[L].style.height = `${array[L] / 10 + 0.2}em`;
-      barHeader[R].style.height = `${array[R] / 10 + 0.2}em`;
+      barHeader[L].style.height = `${(array[L] / 10 + 1) * ratioHeight}em`;
+      barHeader[R].style.height = `${(array[R] / 10 + 1) * ratioHeight}em`;
       barNumber[L].innerHTML = array[L];
       barNumber[R].innerHTML = array[R];
       [barHeader[L].style.borderTop, barHeader[R].style.borderTop] = [
@@ -514,8 +574,8 @@ async function pushDown(array, first, last) {
         await delayTimer(delayTime);
 
         [array[r], array[last]] = [array[last], array[r]];
-        barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-        barHeader[last].style.height = `${array[last] / 10 + 0.2}em`;
+        barHeader[r].style.height = `${(array[r] / 10 + 1) * ratioHeight}em`;
+        barHeader[last].style.height = `${(array[last] / 10 + 1) * ratioHeight}em`;
         barNumber[r].innerHTML = array[r];
         barNumber[last].innerHTML = array[last];
         await delayTimer(delayTime);
@@ -546,8 +606,8 @@ async function pushDown(array, first, last) {
       await delayTimer(delayTime);
 
       [array[r], array[left]] = [array[left], array[r]];
-      barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-      barHeader[left].style.height = `${array[left] / 10 + 0.2}em`;
+      barHeader[r].style.height = `${(array[r] / 10 + 1) * ratioHeight}em`;
+      barHeader[left].style.height = `${(array[left] / 10 + 1) * ratioHeight}em`;
       barNumber[r].innerHTML = array[r];
       barNumber[left].innerHTML = array[left];
       await delayTimer(delayTime);
@@ -569,8 +629,8 @@ async function pushDown(array, first, last) {
       await delayTimer(delayTime);
 
       [array[r], array[right]] = [array[right], array[r]];
-      barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-      barHeader[right].style.height = `${array[right] / 10 + 0.2}em`;
+      barHeader[r].style.height = `${(array[r] / 10 + 1) * ratioHeight}em`;
+      barHeader[right].style.height = `${(array[right] / 10 + 1) * ratioHeight}em`;
       barNumber[r].innerHTML = array[r];
       barNumber[right].innerHTML = array[right];
       await delayTimer(delayTime);
@@ -618,8 +678,8 @@ async function heapSort(array) {
     await delayTimer(delayTime);
 
     [array[0], array[i]] = [array[i], array[0]];
-    barHeader[0].style.height = `${array[0] / 10 + 0.2}em`;
-    barHeader[i].style.height = `${array[i] / 10 + 0.2}em`;
+    barHeader[0].style.height = `${(array[0] / 10 + 1) * ratioHeight}em`;
+    barHeader[i].style.height = `${(array[i] / 10 + 1) * ratioHeight}em`;
     barNumber[0].innerHTML = array[0];
     barNumber[i].innerHTML = array[i];
     await delayTimer(delayTime);
@@ -639,8 +699,8 @@ async function heapSort(array) {
   await delayTimer(delayTime);
 
   [array[0], array[1]] = [array[1], array[0]];
-  barHeader[0].style.height = `${array[0] / 10 + 0.2}em`;
-  barHeader[1].style.height = `${array[1] / 10 + 0.2}em`;
+  barHeader[0].style.height = `${(array[0] / 10 + 1) * ratioHeight}em`;
+  barHeader[1].style.height = `${(array[1] / 10 + 1) * ratioHeight}em`;
   barNumber[0].innerHTML = array[0];
   barNumber[1].innerHTML = array[1];
   await delayTimer(delayTime);

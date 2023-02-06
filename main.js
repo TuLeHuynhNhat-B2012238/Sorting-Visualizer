@@ -4,7 +4,7 @@ let speed = document.getElementsByClassName('speed')[0]; // speed input to contr
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
-// Use for swap element in array and style barHeader
+// Use for swap element in array, style barHeader and style barNumber
 function swap(array, barHeader, barNumber, indexA, indexB) {
   [array[indexA], array[indexB]] = [array[indexB], array[indexA]];
   barHeader[indexA].style.height = `${array[indexA] / 10 + 0.2}em`;

@@ -4,6 +4,15 @@ let speed = document.getElementsByClassName('speed')[0]; // speed input to contr
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 
+// Use for swap element in array and style barHeader
+function swap(array, barHeader, barNumber, indexA, indexB) {
+  [array[indexA], array[indexB]] = [array[indexB], array[indexA]];
+  barHeader[indexA].style.height = `${array[indexA] / 10 + 0.2}em`;
+  barHeader[indexB].style.height = `${array[indexB] / 10 + 0.2}em`;
+  barNumber[indexA].innerHTML = array[indexA];
+  barNumber[indexB].innerHTML = array[indexB];
+}
+
 // Disable the download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
@@ -207,13 +216,7 @@ async function bubbleSort(array) {
       barHeader[j + 1].style.backgroundColor = 'black';
       await delayTimer(delayTime);
       if (array[j] > array[j + 1]) {
-        [array[j], array[j + 1]] = [array[j + 1], array[j]];
-
-        barHeader[j].style.height = `${array[j] / 10 + 0.2}em`;
-        barHeader[j + 1].style.height = `${array[j + 1] / 10 + 0.2}em`;
-        barNumber[j].innerHTML = array[j];
-        barNumber[j + 1].innerHTML = array[j + 1];
-
+        swap(array, barHeader, barNumber, j, j + 1);
         checked = true;
       }
       barHeader[j].style.backgroundColor = 'red';
@@ -286,13 +289,7 @@ async function selectionSort(array) {
     }
 
     if (minIndex != i) {
-      [array[i], array[minIndex]] = [array[minIndex], array[i]];
-
-      barNumber[i].innerHTML = array[i];
-      barNumber[minIndex].innerHTML = array[minIndex];
-      barHeader[i].style.height = `${array[i] / 10 + 0.2}em`;
-      barHeader[minIndex].style.height = `${array[minIndex] / 10 + 0.2}em`;
-
+      swap(array, barHeader, barNumber, i, minIndex);
       barHeader[minIndex].style.backgroundColor = 'red';
     }
     barHeader[i].style.backgroundColor = 'green';
@@ -328,15 +325,8 @@ async function insertionSort(array) {
     while (j > 0 && array[j] < array[j - 1]) {
       barHeader[j].style.backgroundColor = 'blue';
       await delayTimer(delayTime);
-
-      [array[j], array[j - 1]] = [array[j - 1], array[j]];
-
-      barNumber[j].innerHTML = array[j];
-      barNumber[j - 1].innerHTML = array[j - 1];
-      barHeader[j].style.height = `${array[j] / 10 + 0.2}em`;
-      barHeader[j - 1].style.height = `${array[j - 1] / 10 + 0.2}em`;
+      swap(array, barHeader, barNumber, j, j - 1);
       barHeader[j].style.backgroundColor = 'green';
-
       j--;
     }
     barHeader[i].style.backgroundColor = 'green';
@@ -411,12 +401,7 @@ async function partition(array, i, j, pivot, pivotIndex) {
       barHeader[L].style.backgroundColor = 'yellow';
       barHeader[R].style.backgroundColor = 'yellow';
       await delayTimer(delayTime);
-
-      [array[L], array[R]] = [array[R], array[L]];
-      barHeader[L].style.height = `${array[L] / 10 + 0.2}em`;
-      barHeader[R].style.height = `${array[R] / 10 + 0.2}em`;
-      barNumber[L].innerHTML = array[L];
-      barNumber[R].innerHTML = array[R];
+      swap(array, barHeader, barNumber, L, R);
       [barHeader[L].style.borderTop, barHeader[R].style.borderTop] = [
         barHeader[R].style.borderTop,
         barHeader[L].style.borderTop,
@@ -507,12 +492,7 @@ async function pushDown(array, first, last) {
         barHeader[r].style.backgroundColor = 'yellow';
         barHeader[last].style.backgroundColor = 'yellow';
         await delayTimer(delayTime);
-
-        [array[r], array[last]] = [array[last], array[r]];
-        barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-        barHeader[last].style.height = `${array[last] / 10 + 0.2}em`;
-        barNumber[r].innerHTML = array[r];
-        barNumber[last].innerHTML = array[last];
+        swap(array, barHeader, barNumber, r, last);
         await delayTimer(delayTime);
 
         barHeader[r].style.backgroundColor = 'blue';
@@ -539,12 +519,7 @@ async function pushDown(array, first, last) {
       barHeader[r].style.backgroundColor = 'yellow';
       barHeader[left].style.backgroundColor = 'yellow';
       await delayTimer(delayTime);
-
-      [array[r], array[left]] = [array[left], array[r]];
-      barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-      barHeader[left].style.height = `${array[left] / 10 + 0.2}em`;
-      barNumber[r].innerHTML = array[r];
-      barNumber[left].innerHTML = array[left];
+      swap(array, barHeader, barNumber, r, left);
       await delayTimer(delayTime);
 
       barHeader[r].style.backgroundColor = 'blue';
@@ -562,12 +537,7 @@ async function pushDown(array, first, last) {
       barHeader[r].style.backgroundColor = 'yellow';
       barHeader[right].style.backgroundColor = 'yellow';
       await delayTimer(delayTime);
-
-      [array[r], array[right]] = [array[right], array[r]];
-      barHeader[r].style.height = `${array[r] / 10 + 0.2}em`;
-      barHeader[right].style.height = `${array[right] / 10 + 0.2}em`;
-      barNumber[r].innerHTML = array[r];
-      barNumber[right].innerHTML = array[right];
+      swap(array, barHeader, barNumber, r, right);
       await delayTimer(delayTime);
 
       barHeader[r].style.backgroundColor = 'blue';
@@ -611,12 +581,7 @@ async function heapSort(array) {
     barHeader[i].style.backgroundColor = 'brown';
     barHeader[0].style.backgroundColor = 'brown';
     await delayTimer(delayTime);
-
-    [array[0], array[i]] = [array[i], array[0]];
-    barHeader[0].style.height = `${array[0] / 10 + 0.2}em`;
-    barHeader[i].style.height = `${array[i] / 10 + 0.2}em`;
-    barNumber[0].innerHTML = array[0];
-    barNumber[i].innerHTML = array[i];
+    swap(array, barHeader, barNumber, 0, i);
     await delayTimer(delayTime);
 
     barHeader[i].style.backgroundColor = 'green';
@@ -632,12 +597,7 @@ async function heapSort(array) {
   barHeader[0].style.backgroundColor = 'brown';
   barHeader[1].style.backgroundColor = 'brown';
   await delayTimer(delayTime);
-
-  [array[0], array[1]] = [array[1], array[0]];
-  barHeader[0].style.height = `${array[0] / 10 + 0.2}em`;
-  barHeader[1].style.height = `${array[1] / 10 + 0.2}em`;
-  barNumber[0].innerHTML = array[0];
-  barNumber[1].innerHTML = array[1];
+  swap(array, barHeader, barNumber, 0, 1);
   await delayTimer(delayTime);
   barHeader[0].style.backgroundColor = 'green';
   barHeader[1].style.backgroundColor = 'green';

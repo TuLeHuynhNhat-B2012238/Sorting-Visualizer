@@ -203,26 +203,21 @@ async function bubbleSort(array) {
   for (let i = 0; i < array.length; i++) {
     checked = false;
     for (let j = 0; j < array.length - 1 - i; j++) {
-      let barHeaderj = barHeader[j];
-      let barNumberj = barNumber[j];
-      let barHeaderNextj = barHeader[j + 1];
-      let barNumberNextj = barNumber[j + 1];
-
-      barHeaderj.style.backgroundColor = 'black';
-      barHeaderNextj.style.backgroundColor = 'black';
+      barHeader[j].style.backgroundColor = 'black';
+      barHeader[j + 1].style.backgroundColor = 'black';
       await delayTimer(delayTime);
       if (array[j] > array[j + 1]) {
         [array[j], array[j + 1]] = [array[j + 1], array[j]];
 
-        barHeaderj.style.height = `${array[j] / 10 + 0.2}em`;
-        barHeaderNextj.style.height = `${array[j + 1] / 10 + 0.2}em`;
-        barNumberj.innerHTML = array[j];
-        barNumberNextj.innerHTML = array[j + 1];
+        barHeader[j].style.height = `${array[j] / 10 + 0.2}em`;
+        barHeader[j + 1].style.height = `${array[j + 1] / 10 + 0.2}em`;
+        barNumber[j].innerHTML = array[j];
+        barNumber[j + 1].innerHTML = array[j + 1];
 
         checked = true;
       }
-      barHeaderj.style.backgroundColor = 'red';
-      barHeaderNextj.style.backgroundColor = 'red';
+      barHeader[j].style.backgroundColor = 'red';
+      barHeader[j + 1].style.backgroundColor = 'red';
     }
     if (checked == false) {
       for (let j = 0; j < array.length - i; j++) {

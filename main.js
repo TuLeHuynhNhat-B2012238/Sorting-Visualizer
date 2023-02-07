@@ -194,6 +194,29 @@ createArrayBtn.addEventListener('click', () => {
   }
 });
 
+// Event handler when click sort button
+function sortBtnClickHandler(sortFunc) {
+  if (!checkArrayNumberAndCheckEmptyArray(array)) {
+    alert('Please create your array!');
+    return null;
+  }
+  if (sortFunc.name != 'quickSort') {
+    disableAllActivity();
+    sortFunc(array).then((data) => {
+      console.log(data);
+      enableAllActivity();
+      enableDownloadArray();
+    });
+  } else {
+    disableAllActivity();
+    sortFunc(array, 0, array.length - 1).then((data) => {
+      console.log(data);
+      enableAllActivity();
+      enableDownloadArray();
+    });
+  }
+}
+
 // Use for delay ms time when call it
 function delayTimer(ms) {
   return new Promise((resolve) => {
@@ -242,17 +265,7 @@ async function bubbleSort(array) {
 
 // Use for sort array by bubble sort every time user click bubble sort button
 document.getElementsByClassName('bubble')[0].addEventListener('click', () => {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
-    return null;
-  }
-
-  disableAllActivity();
-  bubbleSort(array).then((data) => {
-    console.log(data);
-    enableAllActivity();
-    enableDownloadArray();
-  });
+  sortBtnClickHandler(bubbleSort);
 });
 
 // Selection Sort
@@ -299,17 +312,7 @@ async function selectionSort(array) {
 
 // Use for sort array by selection sort every time user click selection sort button
 document.getElementsByClassName('selection')[0].addEventListener('click', () => {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
-    return null;
-  }
-
-  disableAllActivity();
-  selectionSort(array).then((data) => {
-    console.log(data);
-    enableAllActivity();
-    enableDownloadArray();
-  });
+  sortBtnClickHandler(selectionSort);
 });
 
 // Insertion Sort
@@ -337,17 +340,7 @@ async function insertionSort(array) {
 
 // Use for sort array by insertion sort every time user click insertion sort button
 document.getElementsByClassName('insertion')[0].addEventListener('click', () => {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
-    return null;
-  }
-
-  disableAllActivity();
-  insertionSort(array).then((data) => {
-    console.log(data);
-    enableAllActivity();
-    enableDownloadArray();
-  });
+  sortBtnClickHandler(insertionSort);
 });
 
 // Quick sort
@@ -463,17 +456,7 @@ async function quickSort(array, i, j) {
 
 // Use for sort array by quick sort every time user click quick sort button
 document.getElementsByClassName('quick')[0].addEventListener('click', () => {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
-    return null;
-  }
-
-  disableAllActivity();
-  quickSort(array, 0, array.length - 1).then((data) => {
-    console.log(data);
-    enableAllActivity();
-    enableDownloadArray();
-  });
+  sortBtnClickHandler(quickSort);
 });
 
 // Heap sort
@@ -607,15 +590,5 @@ async function heapSort(array) {
 
 // Use for sort array by heap sort every time user click heap sort button
 document.getElementsByClassName('heap')[0].addEventListener('click', () => {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
-    return null;
-  }
-
-  disableAllActivity();
-  heapSort(array).then((data) => {
-    console.log(data);
-    enableAllActivity();
-    enableDownloadArray();
-  });
+  sortBtnClickHandler(heapSort);
 });

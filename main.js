@@ -200,6 +200,10 @@ function sortBtnClickHandler(sortFunc) {
     alert('Please create your array!');
     return null;
   }
+  let barHeader = document.getElementsByClassName('bar-header');
+  for (let i = 0; i < array.length; i++) {
+    barHeader[i].style.backgroundColor = 'red';
+  }
   if (sortFunc.name != 'quickSort') {
     disableAllActivity();
     sortFunc(array).then((data) => {

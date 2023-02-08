@@ -252,7 +252,7 @@ async function bubbleSort(array) {
       }
 
       await delayTimer(delayTime);
-      document.getElementsByClassName('bar-header')[array.length - i].style.backgroundColor =
+      document.getElementsByClassName('bar-header')[array.length - 1 - i].style.backgroundColor =
         'green';
       break;
     } else {

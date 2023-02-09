@@ -65,6 +65,10 @@ function disableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = true;
   document.getElementsByClassName('min-range-input')[0].disabled = true;
   document.getElementsByClassName('max-range-input')[0].disabled = true;
+  document.getElementsByClassName('decrease')[0].style.color = 'rgba(240, 255, 255, 0.5)';
+  document.getElementsByClassName('ascending')[0].style.color = 'rgba(240, 255, 255, 0.5)';
+  document.getElementsByClassName('decrease')[0].disabled = true;
+  document.getElementsByClassName('ascending')[0].disabled = true;
 }
 // Enable buttons and inputs after sorting
 function enableAllActivity() {
@@ -80,6 +84,15 @@ function enableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = false;
   document.getElementsByClassName('min-range-input')[0].disabled = false;
   document.getElementsByClassName('max-range-input')[0].disabled = false;
+  document.getElementsByClassName('decrease')[0].disabled = false;
+  document.getElementsByClassName('ascending')[0].disabled = false;
+  if (ascending) {
+    document.getElementsByClassName('decrease')[0].style.color = 'azure';
+    document.getElementsByClassName('ascending')[0].style.color = 'rgb(0, 234, 255)';
+  } else {
+    document.getElementsByClassName('decrease')[0].style.color = 'rgb(0, 234, 255)';
+    document.getElementsByClassName('ascending')[0].style.color = 'azure';
+  }
 }
 // Use for get a delayTime value when user drag speed bar
 speed.addEventListener('input', (e) => {

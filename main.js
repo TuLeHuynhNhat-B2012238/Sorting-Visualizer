@@ -4,6 +4,7 @@ let speed = document.getElementsByClassName('speed')[0]; // speed input to contr
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
 let timeout;
+let ascending = 1; // ascending sort default
 
 // Use for swap element in array, style barHeader and style barNumber
 function swap(array, barHeader, barNumber, indexA, indexB) {
@@ -271,9 +272,16 @@ async function bubbleSort(array) {
       barHeader[j].style.backgroundColor = 'black';
       barHeader[j + 1].style.backgroundColor = 'black';
       await delayTimer(delayTime);
-      if (array[j] > array[j + 1]) {
-        swap(array, barHeader, barNumber, j, j + 1);
-        checked = true;
+      if (ascending) {
+        if (array[j] > array[j + 1]) {
+          swap(array, barHeader, barNumber, j, j + 1);
+          checked = true;
+        }
+      } else {
+        if (array[j] < array[j + 1]) {
+          swap(array, barHeader, barNumber, j, j + 1);
+          checked = true;
+        }
       }
       barHeader[j].style.backgroundColor = 'red';
       barHeader[j + 1].style.backgroundColor = 'red';
@@ -313,24 +321,44 @@ async function selectionSort(array) {
     for (let j = i + 1; j < array.length; j++) {
       barHeader[j].style.backgroundColor = 'black'; // xét nhân viên j
       await delayTimer(delayTime);
-
-      if (array[minIndex] > array[j]) {
-        // Loại nhân viên ứng tuyển ưu tiên trước đó (nếu không phải là nhân viên ứng tuyển đầu tiên)
-        if (minIndex != i) {
-          barHeader[minIndex].style.backgroundColor = 'red';
-        }
-        // Xét nhân viên ứng tuyển cuối cùng hay chưa. Nếu là nhân viên ứng tuyển vị trí cuối cùng thì đợi thêm 1 giây
-        if (j == array.length - 1) {
-          barHeader[j].style.backgroundColor = 'yellow';
-          await delayTimer(delayTime);
+      if (ascending) {
+        if (array[minIndex] > array[j]) {
+          // Loại nhân viên ứng tuyển ưu tiên trước đó (nếu không phải là nhân viên ứng tuyển đầu tiên)
+          if (minIndex != i) {
+            barHeader[minIndex].style.backgroundColor = 'red';
+          }
+          // Xét nhân viên ứng tuyển cuối cùng hay chưa. Nếu là nhân viên ứng tuyển vị trí cuối cùng thì đợi thêm 1 giây
+          if (j == array.length - 1) {
+            barHeader[j].style.backgroundColor = 'yellow';
+            await delayTimer(delayTime);
+          } else {
+            barHeader[j].style.backgroundColor = 'yellow';
+          }
+          // Đánh dấu được ưu tiên ứng tuyển
+          minIndex = j;
         } else {
-          barHeader[j].style.backgroundColor = 'yellow';
+          // nhân viên đã loại
+          barHeader[j].style.backgroundColor = 'red';
         }
-        // Đánh dấu được ưu tiên ứng tuyển
-        minIndex = j;
       } else {
-        // nhân viên đã loại
-        barHeader[j].style.backgroundColor = 'red';
+        if (array[minIndex] < array[j]) {
+          // Loại nhân viên ứng tuyển ưu tiên trước đó (nếu không phải là nhân viên ứng tuyển đầu tiên)
+          if (minIndex != i) {
+            barHeader[minIndex].style.backgroundColor = 'red';
+          }
+          // Xét nhân viên ứng tuyển cuối cùng hay chưa. Nếu là nhân viên ứng tuyển vị trí cuối cùng thì đợi thêm 1 giây
+          if (j == array.length - 1) {
+            barHeader[j].style.backgroundColor = 'yellow';
+            await delayTimer(delayTime);
+          } else {
+            barHeader[j].style.backgroundColor = 'yellow';
+          }
+          // Đánh dấu được ưu tiên ứng tuyển
+          minIndex = j;
+        } else {
+          // nhân viên đã loại
+          barHeader[j].style.backgroundColor = 'red';
+        }
       }
     }
 
@@ -358,12 +386,22 @@ async function insertionSort(array) {
     await delayTimer(delayTime);
 
     let j = i;
-    while (j > 0 && array[j] < array[j - 1]) {
-      barHeader[j].style.backgroundColor = 'blue';
-      await delayTimer(delayTime);
-      swap(array, barHeader, barNumber, j, j - 1);
-      barHeader[j].style.backgroundColor = 'green';
-      j--;
+    if (ascending) {
+      while (j > 0 && array[j] < array[j - 1]) {
+        barHeader[j].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, j, j - 1);
+        barHeader[j].style.backgroundColor = 'green';
+        j--;
+      }
+    } else {
+      while (j > 0 && array[j] > array[j - 1]) {
+        barHeader[j].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, j, j - 1);
+        barHeader[j].style.backgroundColor = 'green';
+        j--;
+      }
     }
     barHeader[i].style.backgroundColor = 'green';
   }
@@ -405,22 +443,42 @@ async function partition(array, i, j, pivot, pivotIndex) {
   let barNumber = document.getElementsByClassName('bar-number');
 
   while (L <= R) {
-    while (array[L] < pivot) {
-      if (L == i) barHeader[L].style.backgroundColor = 'blue';
-      else barHeader[L].style.backgroundColor = 'red';
-      L++;
-      barHeader[L].style.backgroundColor = 'black';
-      if (L > R) barHeader[L - 1].style.backgroundColor = 'white';
+    if (ascending) {
+      while (array[L] < pivot) {
+        if (L == i) barHeader[L].style.backgroundColor = 'blue';
+        else barHeader[L].style.backgroundColor = 'red';
+        L++;
+        barHeader[L].style.backgroundColor = 'black';
+        if (L > R) barHeader[L - 1].style.backgroundColor = 'white';
 
-      await delayTimer(delayTime);
-    }
-    while (array[R] >= pivot) {
-      if (R == j) barHeader[R].style.backgroundColor = 'blue';
-      else barHeader[R].style.backgroundColor = 'red';
-      R--;
-      barHeader[R].style.backgroundColor = 'white';
-      if (R < L) barHeader[R + 1].style.backgroundColor = 'black';
-      await delayTimer(delayTime);
+        await delayTimer(delayTime);
+      }
+      while (array[R] >= pivot) {
+        if (R == j) barHeader[R].style.backgroundColor = 'blue';
+        else barHeader[R].style.backgroundColor = 'red';
+        R--;
+        barHeader[R].style.backgroundColor = 'white';
+        if (R < L) barHeader[R + 1].style.backgroundColor = 'black';
+        await delayTimer(delayTime);
+      }
+    } else {
+      while (array[L] >= pivot) {
+        if (L == i) barHeader[L].style.backgroundColor = 'blue';
+        else barHeader[L].style.backgroundColor = 'red';
+        L++;
+        barHeader[L].style.backgroundColor = 'black';
+        if (L > R) barHeader[L - 1].style.backgroundColor = 'white';
+
+        await delayTimer(delayTime);
+      }
+      while (array[R] < pivot) {
+        if (R == j) barHeader[R].style.backgroundColor = 'blue';
+        else barHeader[R].style.backgroundColor = 'red';
+        R--;
+        barHeader[R].style.backgroundColor = 'white';
+        if (R < L) barHeader[R + 1].style.backgroundColor = 'black';
+        await delayTimer(delayTime);
+      }
     }
 
     if (L < R) {
@@ -503,79 +561,156 @@ async function pushDown(array, first, last) {
   while (r <= Math.floor((last - 1) / 2)) {
     left = r * 2 + 1;
     right = r * 2 + 2;
-    if (last == 2 * r + 1) {
-      if (array[r] < array[last]) {
-        barHeader[r].style.backgroundColor = 'yellow';
-        barHeader[last].style.backgroundColor = 'yellow';
-        await delayTimer(delayTime);
-        swap(array, barHeader, barNumber, r, last);
-        await delayTimer(delayTime);
+    if (ascending) {
+      if (last == 2 * r + 1) {
+        if (array[r] < array[last]) {
+          barHeader[r].style.backgroundColor = 'yellow';
+          barHeader[last].style.backgroundColor = 'yellow';
+          await delayTimer(delayTime);
+          swap(array, barHeader, barNumber, r, last);
+          await delayTimer(delayTime);
 
-        barHeader[r].style.backgroundColor = 'blue';
-        barHeader[last].style.backgroundColor = 'red';
-        await delayTimer(delayTime);
+          barHeader[r].style.backgroundColor = 'blue';
+          barHeader[last].style.backgroundColor = 'red';
+          await delayTimer(delayTime);
 
+          barHeader[r].style.backgroundColor = 'red';
+          r = last;
+          barHeader[r].style.backgroundColor = 'blue';
+          await delayTimer(delayTime);
+          barHeader[r].style.backgroundColor = 'red';
+
+          if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+        }
         barHeader[r].style.backgroundColor = 'red';
         r = last;
         barHeader[r].style.backgroundColor = 'blue';
         await delayTimer(delayTime);
+
         barHeader[r].style.backgroundColor = 'red';
 
-        if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else if (array[r] < array[left] && array[left] >= array[right]) {
+        barHeader[r].style.backgroundColor = 'yellow';
+        barHeader[left].style.backgroundColor = 'yellow';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, r, left);
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'blue';
+        barHeader[left].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        r = left;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else if (array[r] < array[right] && array[left] < array[right]) {
+        barHeader[r].style.backgroundColor = 'yellow';
+        barHeader[right].style.backgroundColor = 'yellow';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, r, right);
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'blue';
+        barHeader[right].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        r = right;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else {
+        barHeader[r].style.backgroundColor = 'red';
+        r = last;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
       }
-      barHeader[r].style.backgroundColor = 'red';
-      r = last;
-      barHeader[r].style.backgroundColor = 'blue';
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'red';
-
-      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
-    } else if (array[r] < array[left] && array[left] >= array[right]) {
-      barHeader[r].style.backgroundColor = 'yellow';
-      barHeader[left].style.backgroundColor = 'yellow';
-      await delayTimer(delayTime);
-      swap(array, barHeader, barNumber, r, left);
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'blue';
-      barHeader[left].style.backgroundColor = 'red';
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'red';
-      r = left;
-      barHeader[r].style.backgroundColor = 'blue';
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'red';
-      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
-    } else if (array[r] < array[right] && array[left] < array[right]) {
-      barHeader[r].style.backgroundColor = 'yellow';
-      barHeader[right].style.backgroundColor = 'yellow';
-      await delayTimer(delayTime);
-      swap(array, barHeader, barNumber, r, right);
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'blue';
-      barHeader[right].style.backgroundColor = 'red';
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'red';
-      r = right;
-      barHeader[r].style.backgroundColor = 'blue';
-      await delayTimer(delayTime);
-
-      barHeader[r].style.backgroundColor = 'red';
-
-      if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
     } else {
-      barHeader[r].style.backgroundColor = 'red';
-      r = last;
-      barHeader[r].style.backgroundColor = 'blue';
-      await delayTimer(delayTime);
+      if (last == 2 * r + 1) {
+        if (array[r] > array[last]) {
+          barHeader[r].style.backgroundColor = 'yellow';
+          barHeader[last].style.backgroundColor = 'yellow';
+          await delayTimer(delayTime);
+          swap(array, barHeader, barNumber, r, last);
+          await delayTimer(delayTime);
 
-      barHeader[r].style.backgroundColor = 'red';
-      await delayTimer(delayTime);
+          barHeader[r].style.backgroundColor = 'blue';
+          barHeader[last].style.backgroundColor = 'red';
+          await delayTimer(delayTime);
+
+          barHeader[r].style.backgroundColor = 'red';
+          r = last;
+          barHeader[r].style.backgroundColor = 'blue';
+          await delayTimer(delayTime);
+          barHeader[r].style.backgroundColor = 'red';
+
+          if (r > Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+        }
+        barHeader[r].style.backgroundColor = 'red';
+        r = last;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else if (array[r] > array[left] && array[left] <= array[right]) {
+        barHeader[r].style.backgroundColor = 'yellow';
+        barHeader[left].style.backgroundColor = 'yellow';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, r, left);
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'blue';
+        barHeader[left].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        r = left;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else if (array[r] > array[right] && array[left] > array[right]) {
+        barHeader[r].style.backgroundColor = 'yellow';
+        barHeader[right].style.backgroundColor = 'yellow';
+        await delayTimer(delayTime);
+        swap(array, barHeader, barNumber, r, right);
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'blue';
+        barHeader[right].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        r = right;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+
+        if (r < Math.floor((last - 1) / 2)) await delayTimer(delayTime);
+      } else {
+        barHeader[r].style.backgroundColor = 'red';
+        r = last;
+        barHeader[r].style.backgroundColor = 'blue';
+        await delayTimer(delayTime);
+
+        barHeader[r].style.backgroundColor = 'red';
+        await delayTimer(delayTime);
+      }
     }
   }
 }
@@ -638,4 +773,16 @@ document.getElementsByClassName('quit')[0].addEventListener('click', () => {
   enableAllActivity();
   disableDownloadArray();
   disableQuitSorting();
+});
+
+// Handler sort ácending or sort decreasing
+document.getElementsByClassName('ascending')[0].addEventListener('click', () => {
+  ascending = 1;
+  document.getElementsByClassName('ascending')[0].style.color = 'rgb(0, 234, 255)';
+  document.getElementsByClassName('decrease')[0].style.color = 'azure';
+});
+document.getElementsByClassName('decrease')[0].addEventListener('click', () => {
+  ascending = 0;
+  document.getElementsByClassName('decrease')[0].style.color = 'rgb(0, 234, 255)';
+  document.getElementsByClassName('ascending')[0].style.color = 'azure';
 });

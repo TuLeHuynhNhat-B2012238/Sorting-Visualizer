@@ -107,8 +107,12 @@ textarea {
   background-color: transparent;
   transition: color 0.1s;
 }
+
 .sub-mode-container .quit {
   cursor: default;
+}
+.ascending {
+  color: rgb(0, 234, 255);
 }
 .bars-container {
   min-height: 97vh;

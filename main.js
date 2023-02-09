@@ -23,6 +23,13 @@ function enableDownloadArray() {
   let downloadEl = document.getElementsByClassName('download')[0];
   downloadEl.style.pointerEvents = 'auto';
   downloadEl.style.color = 'azure';
+  downloadEl.style.transition = 'color 0.1s';
+  downloadEl.addEventListener('mouseover', (e) => {
+    downloadEl.style.color = 'black';
+  });
+  downloadEl.addEventListener('mouseout', (e) => {
+    downloadEl.style.color = 'azure';
+  });
   downloadEl.setAttribute('href', 'data:text/plain;charset=utf-11,' + encodeURIComponent(array));
 }
 // Disable buttons and inputs while sorting

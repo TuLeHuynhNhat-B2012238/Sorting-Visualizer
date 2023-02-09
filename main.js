@@ -3,6 +3,7 @@ let bars = document.getElementsByClassName('bars-container'); // bars element co
 let speed = document.getElementsByClassName('speed')[0]; // speed input to control sorting speed
 let array = []; // store list number of element to sort
 let delayTime = 2000; // default speed sort = 2000ms (slowest)
+let timeout;
 
 // Use for swap element in array, style barHeader and style barNumber
 function swap(array, barHeader, barNumber, indexA, indexB) {
@@ -12,7 +13,24 @@ function swap(array, barHeader, barNumber, indexA, indexB) {
   barNumber[indexA].innerHTML = array[indexA];
   barNumber[indexB].innerHTML = array[indexB];
 }
-
+// Disable the quit sorting button if don't sorting
+function disableQuitSorting() {
+  document.getElementsByClassName('quit')[0].style.color = '#f0ffff4d';
+  document.getElementsByClassName('quit')[0].style.cursor = 'default';
+  document.getElementsByClassName('quit')[0].disabled = true;
+}
+// Enable the quit sorting button while sorting
+function enableQuitSorting() {
+  document.getElementsByClassName('quit')[0].disabled = false;
+  document.getElementsByClassName('quit')[0].style.color = 'azure';
+  document.getElementsByClassName('quit')[0].style.cursor = 'pointer';
+  document.getElementsByClassName('quit')[0].addEventListener('mouseover', (e) => {
+    document.getElementsByClassName('quit')[0].style.color = 'black';
+  });
+  document.getElementsByClassName('quit')[0].addEventListener('mouseout', (e) => {
+    document.getElementsByClassName('quit')[0].style.color = 'azure';
+  });
+}
 // Disable the download array button while sorting
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
@@ -213,17 +231,21 @@ function sortBtnClickHandler(sortFunc) {
   }
   if (sortFunc.name != 'quickSort') {
     disableAllActivity();
+    enableQuitSorting();
     sortFunc(array).then((data) => {
       console.log(data);
       enableAllActivity();
       enableDownloadArray();
+      disableQuitSorting();
     });
   } else {
     disableAllActivity();
+    enableQuitSorting();
     sortFunc(array, 0, array.length - 1).then((data) => {
       console.log(data);
       enableAllActivity();
       enableDownloadArray();
+      disableQuitSorting();
     });
   }
 }
@@ -231,9 +253,9 @@ function sortBtnClickHandler(sortFunc) {
 // Use for delay ms time when call it
 function delayTimer(ms) {
   return new Promise((resolve) => {
-    setTimeout(() => {
+    return (timeout = setTimeout(() => {
       resolve('');
-    }, ms);
+    }, ms));
   });
 }
 
@@ -602,4 +624,18 @@ async function heapSort(array) {
 // Use for sort array by heap sort every time user click heap sort button
 document.getElementsByClassName('heap')[0].addEventListener('click', () => {
   sortBtnClickHandler(heapSort);
+});
+
+// Use for user want to quit or stop while sorting
+document.getElementsByClassName('quit')[0].addEventListener('click', () => {
+  clearTimeout(timeout);
+
+  let barHeader = document.getElementsByClassName('bar-header');
+  for (let i = 0; i < array.length; i++) {
+    barHeader[i].style.backgroundColor = 'red';
+  }
+
+  enableAllActivity();
+  disableDownloadArray();
+  disableQuitSorting();
 });

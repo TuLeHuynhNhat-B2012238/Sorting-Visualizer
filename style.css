@@ -89,6 +89,26 @@ textarea {
   background-color: #343a40;
 }
 
+.sub-mode-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 10vh;
+  background-color: #343a405a;
+  color: azure;
+  gap: 1%;
+}
+.sub-mode-container button {
+  background-color: transparent;
+  transition: color 0.1s;
+}
+.sub-mode-container .quit {
+  cursor: default;
+}
 .bars-container {
   min-height: 97vh;
   height: fit-content;

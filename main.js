@@ -329,6 +329,7 @@ async function selectionSort(array) {
   for (let i = 0; i < array.length; i++) {
     let minIndex = i;
     barHeader[i].style.backgroundColor = 'blue';
+    await delayTimer(delayTime);
 
     for (let j = i + 1; j < array.length; j++) {
       barHeader[j].style.backgroundColor = 'black'; // xét nhân viên j

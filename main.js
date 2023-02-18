@@ -301,7 +301,6 @@ async function bubbleSort(array) {
     }
     if (checked == false) {
       for (let j = 0; j < array.length - i; j++) {
-        await delayTimer(delayTime);
         document.getElementsByClassName('bar-header')[j].style.backgroundColor = 'green';
       }
 

@@ -781,6 +781,7 @@ document.getElementsByClassName('quit')[0].addEventListener('click', () => {
   let barHeader = document.getElementsByClassName('bar-header');
   for (let i = 0; i < array.length; i++) {
     barHeader[i].style.backgroundColor = 'red';
+    barHeader[i].style.borderTop = 'none';
   }
 
   enableAllActivity();

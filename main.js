@@ -757,14 +757,19 @@ async function heapSort(array) {
 
     await pushDown(array, 0, i - 1);
   }
-
-  barHeader[0].style.backgroundColor = 'brown';
-  barHeader[1].style.backgroundColor = 'brown';
-  await delayTimer(delayTime);
-  swap(array, barHeader, barNumber, 0, 1);
-  await delayTimer(delayTime);
-  barHeader[0].style.backgroundColor = 'green';
-  barHeader[1].style.backgroundColor = 'green';
+  if (array.length == 1) {
+    barHeader[0].style.backgroundColor = 'brown';
+    await delayTimer(delayTime);
+    barHeader[0].style.backgroundColor = 'green';
+  } else {
+    barHeader[0].style.backgroundColor = 'brown';
+    barHeader[1].style.backgroundColor = 'brown';
+    await delayTimer(delayTime);
+    swap(array, barHeader, barNumber, 0, 1);
+    await delayTimer(delayTime);
+    barHeader[0].style.backgroundColor = 'green';
+    barHeader[1].style.backgroundColor = 'green';
+  }
 
   return array;
 }

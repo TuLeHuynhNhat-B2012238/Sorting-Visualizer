@@ -1,3 +1,3 @@
 # Sorting-Visualizer
-![UC_Sorting Visualizer](https://user-images.githubusercontent.com/86056375/225695605-06a34c08-b78e-4688-9c38-32aeace1bd24.jpg)
-![F_Sorting Visualizer](https://user-images.githubusercontent.com/86056375/225695163-c3ed7d4d-494a-44db-93e7-1f766996ff16.jpg)
+![UC_Sorting Visualizer](https://user-images.githubusercontent.com/86056375/227137631-1a31855f-3292-41d3-b8e2-acf1cea81fed.png)
+![F_Sorting Visualizer](https://user-images.githubusercontent.com/86056375/227137639-335fbef4-9cec-463c-bd0d-f7b2d522143b.png)

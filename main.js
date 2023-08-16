@@ -1,10 +1,18 @@
 // Global variables
 let bars = document.getElementsByClassName('bars-container'); // bars element contain list bar-item, bar-item represent a element in array
 let speed = document.getElementsByClassName('speed')[0]; // speed input to control sorting speed
+let barValueViewInput = document.getElementsByClassName('display-value-input');
+let adjustGapRange = document.getElementsByClassName('display-gap-input')[0];
+let backupArray = [];
 let array = []; // store list number of element to sort
-let delayTime = 2000; // default speed sort = 2000ms (slowest)
+let delayTime = 1000; // default speed sort = 1000ms
 let timeout;
 let ascending = 1; // ascending sort default
+let statebarValueView = 1; // default 1 = on, 0 = off
+let sortingInfoHTML = null;
+let sortingInfoTxt = null;
+let swapCount = 0;
+let combineState = 0;
 
 // Use for swap element in array, style barHeader and style barNumber
 function swap(array, barHeader, barNumber, indexA, indexB) {
@@ -13,6 +21,7 @@ function swap(array, barHeader, barNumber, indexA, indexB) {
   barHeader[indexB].style.height = `${array[indexB] / 10 + 0.2}em`;
   barNumber[indexA].innerHTML = array[indexA];
   barNumber[indexB].innerHTML = array[indexB];
+  swapCount++;
 }
 // Disable the quit sorting button if don't sorting
 function disableQuitSorting() {
@@ -36,6 +45,7 @@ function enableQuitSorting() {
 function disableDownloadArray() {
   document.getElementsByClassName('download')[0].style.pointerEvents = 'none';
   document.getElementsByClassName('download')[0].style.color = '#f0ffff4d';
+  clearSortingInfo();
 }
 // Enable the download array button after sorting
 function enableDownloadArray() {
@@ -49,7 +59,39 @@ function enableDownloadArray() {
   downloadEl.addEventListener('mouseout', (e) => {
     downloadEl.style.color = 'azure';
   });
-  downloadEl.setAttribute('href', 'data:text/plain;charset=utf-11,' + encodeURIComponent(array));
+  downloadEl.setAttribute(
+    'href',
+    'data:text/plain;charset=utf-11,' + encodeURIComponent(sortingInfoTxt)
+  );
+}
+function disableReturnArray() {
+  document.getElementsByClassName('returnArray')[0].disabled = true;
+  document.getElementsByClassName('returnArray')[0].style.color = '#f0ffff4d';
+}
+function enableReturnArray() {
+  document.getElementsByClassName('returnArray')[0].disabled = false;
+  document.getElementsByClassName('returnArray')[0].style.color = 'azure';
+  document.getElementsByClassName('returnArray')[0].addEventListener('mouseover', (e) => {
+    document.getElementsByClassName('returnArray')[0].style.color = 'black';
+  });
+  document.getElementsByClassName('returnArray')[0].addEventListener('mouseout', (e) => {
+    document.getElementsByClassName('returnArray')[0].style.color = 'azure';
+  });
+}
+function disableSortingBtn() {
+  document.getElementsByClassName('bubble')[0].disabled = true;
+  document.getElementsByClassName('insertion')[0].disabled = true;
+  document.getElementsByClassName('selection')[0].disabled = true;
+  document.getElementsByClassName('quick')[0].disabled = true;
+  document.getElementsByClassName('heap')[0].disabled = true;
+}
+disableSortingBtn();
+function enableSortingBtn() {
+  document.getElementsByClassName('bubble')[0].disabled = false;
+  document.getElementsByClassName('insertion')[0].disabled = false;
+  document.getElementsByClassName('selection')[0].disabled = false;
+  document.getElementsByClassName('quick')[0].disabled = false;
+  document.getElementsByClassName('heap')[0].disabled = false;
 }
 // Disable buttons and inputs while sorting
 function disableAllActivity() {
@@ -65,9 +107,9 @@ function disableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = true;
   document.getElementsByClassName('min-range-input')[0].disabled = true;
   document.getElementsByClassName('max-range-input')[0].disabled = true;
-  document.getElementsByClassName('decrease')[0].style.color = 'rgba(240, 255, 255, 0.5)';
+  document.getElementsByClassName('descending')[0].style.color = 'rgba(240, 255, 255, 0.5)';
   document.getElementsByClassName('ascending')[0].style.color = 'rgba(240, 255, 255, 0.5)';
-  document.getElementsByClassName('decrease')[0].disabled = true;
+  document.getElementsByClassName('descending')[0].disabled = true;
   document.getElementsByClassName('ascending')[0].disabled = true;
 }
 // Enable buttons and inputs after sorting
@@ -84,13 +126,13 @@ function enableAllActivity() {
   document.getElementsByClassName('number-element-input')[0].disabled = false;
   document.getElementsByClassName('min-range-input')[0].disabled = false;
   document.getElementsByClassName('max-range-input')[0].disabled = false;
-  document.getElementsByClassName('decrease')[0].disabled = false;
+  document.getElementsByClassName('descending')[0].disabled = false;
   document.getElementsByClassName('ascending')[0].disabled = false;
   if (ascending) {
-    document.getElementsByClassName('decrease')[0].style.color = 'azure';
+    document.getElementsByClassName('descending')[0].style.color = 'azure';
     document.getElementsByClassName('ascending')[0].style.color = 'rgb(0, 234, 255)';
   } else {
-    document.getElementsByClassName('decrease')[0].style.color = 'rgb(0, 234, 255)';
+    document.getElementsByClassName('descending')[0].style.color = 'rgb(0, 234, 255)';
     document.getElementsByClassName('ascending')[0].style.color = 'azure';
   }
 }
@@ -98,7 +140,83 @@ function enableAllActivity() {
 speed.addEventListener('input', (e) => {
   delayTime = 2000 - e.target.value;
 });
+// Use for change bar value view
+function showHideBarValueView() {
+  for (let i = 0; i < barValueViewInput.length; i++) {
+    barValueViewInput[i].addEventListener('change', function () {
+      statebarValueView = parseInt(this.value);
 
+      let barNumber = document.getElementsByClassName('bar-number');
+
+      for (let j = 0; j < barNumber.length; j++) {
+        if (statebarValueView) {
+          barNumber[j].style.visibility = 'visible';
+        } else {
+          barNumber[j].style.visibility = 'hidden';
+        }
+      }
+    });
+  }
+}
+showHideBarValueView();
+adjustGapRange.addEventListener('input', (event) => {
+  document.getElementsByClassName('bars-container')[0].style.gap = `${parseFloat(
+    event.target.value
+  )}px`;
+  console.log(parseFloat(event.target.value));
+});
+function createSortingInfo(unsortedArray, algorithm, swapCount, sortedArray) {
+  const algorithmNameObj = {
+    bubbleSort: 'Bubble Sort',
+    selectionSort: 'Selection Sort',
+    insertionSort: 'Insertion Sort',
+    quickSort: 'Quick Sort',
+    heapSort: 'Heap Sort',
+  };
+  if (combineState === 0) {
+    unsortedArray = unsortedArray.join(' ');
+    sortedArray = sortedArray.join(' ');
+    let AlrogithmInfoTxt = `Alrogithm: ${algorithmNameObj[algorithm]} (swap ${swapCount} times)`;
+    let AlrogithmInfoHTML = `<strong>Alrogithm:</strong> ${algorithmNameObj[algorithm]} (swap ${swapCount} times)`;
+
+    sortingInfoHTML = `<strong>Array:</strong> ${unsortedArray}<br>${AlrogithmInfoHTML}<br><strong>After sorted:</strong> ${sortedArray}<hr>`;
+
+    sortingInfoTxt = `Array: ${unsortedArray}\n${AlrogithmInfoTxt}\nAfter sorted: ${sortedArray}`;
+
+    let logContentElm = document.getElementsByClassName('display-log-content')[0];
+    logContentElm.innerHTML = sortingInfoHTML;
+  } else {
+    let logContent = document.getElementsByClassName('display-log-content')[0];
+    let firstIndexHTML = logContent.innerHTML.indexOf('Alrogithm');
+    let lastIndexHTML = logContent.innerHTML.lastIndexOf(')') + 1;
+
+    let newAlrogithmInfoHTML =
+      logContent.innerHTML.slice(firstIndexHTML, lastIndexHTML) +
+      `, ${algorithmNameObj[algorithm]} (swap ${swapCount} times)`;
+
+    document.getElementsByClassName('display-log-content')[0].innerHTML =
+      logContent.innerHTML.replace(
+        logContent.innerHTML.slice(firstIndexHTML, lastIndexHTML),
+        newAlrogithmInfoHTML
+      );
+
+    logContentString = logContent.innerHTML;
+    let replcaceBr = logContentString.replaceAll('<br>', '\n');
+    console.log(replcaceBr);
+    let removeTag = replcaceBr.replaceAll('<strong>', '');
+    removeTag = removeTag.replaceAll('</strong>', '');
+    removeTag = removeTag.replaceAll('<hr>', '');
+    sortingInfoTxt = removeTag;
+  }
+}
+function clearSortingInfo() {
+  sortingInfoHTML = null;
+  sortingInfoTxt = null;
+  swapCount = 0;
+}
+document.getElementsByClassName('display-log-btn')[0].addEventListener('click', (e) => {
+  document.getElementsByClassName('display-log-content')[0].innerHTML = '<hr />';
+});
 // Create random array variables
 let randomBtn = document.getElementsByClassName('random-btn')[0]; // use for create a random array element
 let minRange = document.getElementsByClassName('min-range-input')[0]; // use for input an min range element before click random button
@@ -121,12 +239,11 @@ function renderBars(array) {
     barHeader.style.height = `${array[i] / 10 + 0.2}em`;
     barNumber.innerHTML = array[i];
 
-    barHeader.addEventListener('mouseover', function () {
+    if (statebarValueView) {
       barNumber.style.visibility = 'visible';
-    });
-    barHeader.addEventListener('mouseout', function () {
+    } else {
       barNumber.style.visibility = 'hidden';
-    });
+    }
 
     barItem.appendChild(barHeader);
     barItem.appendChild(barNumber);
@@ -135,24 +252,28 @@ function renderBars(array) {
   }
   console.log(array);
 }
-
 // Type input 1 Create random array handler
 // Use for create an random array with length, min range and maxrange
 function createRandomArray(numElement, minRange, maxRange) {
-  if (maxRange == null || minRange == null || !numElement) {
-    alert('Max range, min range and num element is require');
+  let array = [];
+
+  if (numElement <= 0) {
+    alert('Number Element must have more or equal than 1');
+    return array;
+  }
+
+  if (maxRange < 0 || minRange < 0) {
+    alert('Max Range or Min Range must have more or equal than 0');
     return array;
   }
   if (maxRange < minRange) {
-    alert('Max range do not greater than min range');
+    alert(`Min Range can't greater than Max Range`);
     return array;
   }
 
-  array = [];
   for (let i = 0; i < numElement; i++) {
     array[i] = Math.floor(Math.random() * (maxRange - minRange + 1) + minRange); // maxRange -> minRange
   }
-
   return array;
 }
 
@@ -160,12 +281,15 @@ function createRandomArray(numElement, minRange, maxRange) {
 randomBtn.addEventListener('click', () => {
   disableDownloadArray();
   const numElementValue = Math.round(numElement.value * 1);
-  const minRangeValue = Math.round(minRange.value * 1) || 0;
-  const maxRangeValue = Math.round(maxRange.value * 1) || 200;
-
+  const minRangeValue = Math.round(minRange.value * 1);
+  const maxRangeValue = Math.round(maxRange.value * 1);
+  console.log(numElementValue, minRangeValue, maxRangeValue);
   array = createRandomArray(numElementValue, minRangeValue, maxRangeValue);
-
+  backupArray = [...array];
   renderBars(array);
+  disableReturnArray();
+  enableSortingBtn();
+  combineState = 0;
 });
 
 // Type input 2 Read file into an array handler
@@ -173,13 +297,32 @@ randomBtn.addEventListener('click', () => {
 let fileInput = document.getElementsByClassName('file-input')[0]; // use for read files for creating an array
 
 // Use for check valid array or check input is not empty when read file (type input 2) and read input's user (type input 3)
-function checkArrayNumberAndCheckEmptyArray(array) {
-  if (array.length == 0) {
-    return false;
+function checkValidArray(array) {
+  if (array.length == 0 || array[0] == '') {
+    return {
+      status: false,
+      message: 'Your array is empty!',
+    };
   }
-  return array.every((el) => {
-    return !isNaN(parseInt(el));
-  });
+  if (
+    !array.every((el) => {
+      return !isNaN(parseInt(el));
+    })
+  )
+    return {
+      status: false,
+      message: `Your array can't contain character!`,
+    };
+  if (array.some((e) => e < 0)) {
+    return {
+      status: false,
+      message: `Your array can't contains negative values!`,
+    };
+  }
+  return {
+    status: true,
+    message: 'Valid array',
+  };
 }
 
 // Use for read text from file every time open by user
@@ -195,17 +338,21 @@ fileInput.addEventListener('change', (e) => {
   reader.addEventListener('load', (e) => {
     let contentFile = e.target.result;
 
-    // Check content file only contain number
-    if (!checkArrayNumberAndCheckEmptyArray(contentFile.split(' '))) {
-      // if contain another characters
-      alert('This file not empty and only contain number');
+    // Check valid array
+    if (!checkValidArray(contentFile.split(' ')).status) {
+      // when invalid array
+      alert(checkValidArray(contentFile.split(' ')).message);
     } else {
-      // if only contain number
+      // when valid
       disableDownloadArray();
       array = contentFile.split(' ').map((el) => {
         return parseInt(el);
       });
+      backupArray = [...array];
+      disableReturnArray();
       renderBars(array);
+      enableSortingBtn();
+      combineState = 0;
     }
   });
 
@@ -220,48 +367,55 @@ let createArrayBtn = document.getElementsByClassName('create-array-btn')[0]; // 
 // Create your array handler
 createArrayBtn.addEventListener('click', () => {
   const inputContent = createArrayInput.value.trim();
-  if (!checkArrayNumberAndCheckEmptyArray(inputContent.split(' '))) {
-    // if contain another characters
-    alert('Your array not empty and only contain number');
+  // check valid array
+  if (!checkValidArray(inputContent.split(' ')).status) {
+    // when invalid array
+    alert(checkValidArray(inputContent.split(' ')).message);
   } else {
-    // if only contain number
+    // when valid
     disableDownloadArray();
     array = inputContent.split(' ').map((el) => {
       return parseInt(el);
     });
+    backupArray = [...array];
     renderBars(array);
+    disableReturnArray();
+    enableSortingBtn();
+    combineState = 0;
   }
 });
 
 // Event handler when click sort button
-function sortBtnClickHandler(sortFunc) {
-  if (!checkArrayNumberAndCheckEmptyArray(array)) {
-    alert('Please create your array!');
+async function sortBtnClickHandler(sortFunc) {
+  if (!checkValidArray(array).status) {
+    alert(checkValidArray(array).message);
     return null;
   }
+
   let barHeader = document.getElementsByClassName('bar-header');
   for (let i = 0; i < array.length; i++) {
     barHeader[i].style.backgroundColor = 'red';
   }
+
+  let data = null;
+  swapCount = 0;
+  disableAllActivity();
+  disableReturnArray();
+  disableDownloadArray();
+  enableQuitSorting();
+
   if (sortFunc.name != 'quickSort') {
-    disableAllActivity();
-    enableQuitSorting();
-    sortFunc(array).then((data) => {
-      console.log(data);
-      enableAllActivity();
-      enableDownloadArray();
-      disableQuitSorting();
-    });
+    data = await sortFunc(array);
+    console.log(data);
   } else {
-    disableAllActivity();
-    enableQuitSorting();
-    sortFunc(array, 0, array.length - 1).then((data) => {
-      console.log(data);
-      enableAllActivity();
-      enableDownloadArray();
-      disableQuitSorting();
-    });
+    data = await sortFunc(array, 0, array.length - 1);
   }
+
+  createSortingInfo(backupArray, sortFunc.name, swapCount, array);
+  enableAllActivity();
+  enableDownloadArray();
+  enableReturnArray();
+  disableQuitSorting();
 }
 
 // Use for delay ms time when call it
@@ -317,8 +471,8 @@ async function bubbleSort(array) {
 }
 
 // Use for sort array by bubble sort every time user click bubble sort button
-document.getElementsByClassName('bubble')[0].addEventListener('click', () => {
-  sortBtnClickHandler(bubbleSort);
+document.getElementsByClassName('bubble')[0].addEventListener('click', async () => {
+  await sortBtnClickHandler(bubbleSort);
 });
 
 // Selection Sort
@@ -385,8 +539,8 @@ async function selectionSort(array) {
 }
 
 // Use for sort array by selection sort every time user click selection sort button
-document.getElementsByClassName('selection')[0].addEventListener('click', () => {
-  sortBtnClickHandler(selectionSort);
+document.getElementsByClassName('selection')[0].addEventListener('click', async () => {
+  await sortBtnClickHandler(selectionSort);
 });
 
 // Insertion Sort
@@ -423,8 +577,8 @@ async function insertionSort(array) {
 }
 
 // Use for sort array by insertion sort every time user click insertion sort button
-document.getElementsByClassName('insertion')[0].addEventListener('click', () => {
-  sortBtnClickHandler(insertionSort);
+document.getElementsByClassName('insertion')[0].addEventListener('click', async () => {
+  await sortBtnClickHandler(insertionSort);
 });
 
 // Quick sort
@@ -559,8 +713,8 @@ async function quickSort(array, i, j) {
 }
 
 // Use for sort array by quick sort every time user click quick sort button
-document.getElementsByClassName('quick')[0].addEventListener('click', () => {
-  sortBtnClickHandler(quickSort);
+document.getElementsByClassName('quick')[0].addEventListener('click', async () => {
+  await sortBtnClickHandler(quickSort);
 });
 
 // Heap sort
@@ -775,8 +929,8 @@ async function heapSort(array) {
 }
 
 // Use for sort array by heap sort every time user click heap sort button
-document.getElementsByClassName('heap')[0].addEventListener('click', () => {
-  sortBtnClickHandler(heapSort);
+document.getElementsByClassName('heap')[0].addEventListener('click', async () => {
+  await sortBtnClickHandler(heapSort);
 });
 
 // Use for user want to quit or stop while sorting
@@ -790,6 +944,7 @@ document.getElementsByClassName('quit')[0].addEventListener('click', () => {
   }
 
   enableAllActivity();
+  enableReturnArray();
   disableDownloadArray();
   disableQuitSorting();
 });
@@ -798,10 +953,32 @@ document.getElementsByClassName('quit')[0].addEventListener('click', () => {
 document.getElementsByClassName('ascending')[0].addEventListener('click', () => {
   ascending = 1;
   document.getElementsByClassName('ascending')[0].style.color = 'rgb(0, 234, 255)';
-  document.getElementsByClassName('decrease')[0].style.color = 'azure';
+  document.getElementsByClassName('descending')[0].style.color = 'azure';
 });
-document.getElementsByClassName('decrease')[0].addEventListener('click', () => {
+document.getElementsByClassName('descending')[0].addEventListener('click', () => {
   ascending = 0;
-  document.getElementsByClassName('decrease')[0].style.color = 'rgb(0, 234, 255)';
+  document.getElementsByClassName('descending')[0].style.color = 'rgb(0, 234, 255)';
   document.getElementsByClassName('ascending')[0].style.color = 'azure';
 });
+document.getElementsByClassName('returnArray')[0].addEventListener('click', () => {
+  array = [...backupArray];
+  renderBars(array);
+  disableReturnArray();
+  disableDownloadArray();
+  combineState = 1;
+});
+
+function disableSortingBtn() {
+  document.getElementsByClassName('bubble')[0].disabled = true;
+  document.getElementsByClassName('insertion')[0].disabled = true;
+  document.getElementsByClassName('selection')[0].disabled = true;
+  document.getElementsByClassName('quick')[0].disabled = true;
+  document.getElementsByClassName('heap')[0].disabled = true;
+}
+function enableSortingBtn() {
+  document.getElementsByClassName('bubble')[0].disabled = false;
+  document.getElementsByClassName('insertion')[0].disabled = false;
+  document.getElementsByClassName('selection')[0].disabled = false;
+  document.getElementsByClassName('quick')[0].disabled = false;
+  document.getElementsByClassName('heap')[0].disabled = false;
+}

@@ -125,6 +125,7 @@ textarea {
   flex-wrap: nowrap;
   padding: 10vh 1% 30vh 1%;
   overflow: auto;
+  gap: 10px;
 }
 
 .types-container {
@@ -157,6 +158,7 @@ textarea {
 .bar-header {
   background-color: red;
   transition: height 0.1s ease, background-color 0.1s ease;
+  border-radius: 3px;
 }
 
 .bar-number {
@@ -164,4 +166,65 @@ textarea {
   visibility: hidden;
   color: #343a40;
   font-weight: 600;
+}
+.display-container {
+  position: fixed;
+  background-color: #343a40a9;
+  padding: 10px;
+  width: 20vw;
+  height: 53vh;
+  top: 19vh;
+  left: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+#display-title {
+  font-size: 22px;
+  color: rgb(22, 226, 255);
+  font-weight: bold;
+}
+.display-container div {
+  margin-bottom: 15px;
+}
+.display-value input {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 3px;
+}
+.display-container p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: white;
+}
+.display-log-content {
+  position: absolute;
+  top: 29vh;
+  height: 23vh;
+  width: 94%;
+
+  overflow-wrap: break-word;
+  overflow-y: scroll;
+  font-size: 13px;
+}
+.display-log-title {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  width: 96%;
+  position: absolute;
+  top: 25vh;
+}
+.display-log-title p {
+  margin-bottom: 0;
+}
+.display-log-btn {
+  font-size: 12px;
+  background-color: transparent;
+  text-decoration: underline;
+  padding-bottom: 0px;
+}
+.display-log-btn:hover {
+  color: rgb(248, 128, 128);
+  background-color: transparent;
+  transition: color 0.1s ease;
 }

@@ -13,7 +13,7 @@
       <div class="modes-container">
         <button class="bubble">Bubble sort</button>
         <button class="selection">Selection sort</button>
-        <button class="insertion">Insert sort</button>
+        <button class="insertion">Insertion sort</button>
         <button class="quick">Quick sort</button>
         <button class="heap">Heap sort</button>
       </div>
@@ -23,7 +23,7 @@
       <div class="types-container">
         <!-- type 1 -->
         <div class="type-1">
-          <h3>Create random array</h3>
+          <h3>Create Random Array</h3>
           <div class="type-1-body">
             <div>
               <label for="number-element-input">Number element</label>
@@ -37,15 +37,15 @@
             </div>
             <div>
               <label for="min-range-input">Min range</label>
-              <input class="min-range-input" type="number" min="0" placeholder="min 0" value="0"/>
+              <input class="min-range-input" type="number" min="0" placeholder="min 0" value="0" />
             </div>
             <div>
               <label for="max-range-input">Max range</label>
               <input
                 class="max-range-input"
                 type="number"
-                placeholder="min 1"
-                min="1"
+                placeholder="min 0"
+                min="0"
                 value="200"
               />
             </div>
@@ -54,12 +54,12 @@
         </div>
         <!-- type 2 -->
         <div class="type-2">
-          <h3>Read array from file</h3>
+          <h3>Read Array From File</h3>
           <input class="file-input" type="file" accept="text/plain" />
         </div>
         <!-- type 3 -->
         <div class="type-3">
-          <h3>Create your array</h3>
+          <h3>Create Your Array</h3>
           <textarea class="create-array-input" name="" cols="50" rows="3"></textarea>
           <button class="create-array-btn">Confirm</button>
         </div>
@@ -67,13 +67,38 @@
       <div class="sub-mode-container">
         <div class="speed-item">
           <label for="speed">Speed</label>
-          <input type="range" class="speed" value="0" min="0" max="2000" step="1"></>
+          <input type="range" class="speed" value="1000" min="0" max="2000" step="1" />
         </div>
-        <!-- <button class="return">Return to the array before sorting</button> -->
-        <button class="quit" disabled>Quit sorting</button>
-        <a class="download" href="" download="array.txt">Download sorted array</a>
         <button class="ascending">Ascending</button>
-        <button class="decrease">Decrease</button>
+        <button class="descending">Descending</button>
+        <button class="returnArray" disabled>Return</button>
+        <a class="download" href="" download="SortingInfo.txt">Download sorted array</a>
+        <button class="quit" disabled>Quit sorting</button>
+      </div>
+      <div class="display-container">
+        <p id="display-title">Display</p>
+        <div class="display-value">
+          <p>Bar Value View</p>
+          <label>
+            On
+            <input class="display-value-input" type="radio" checked name="radio" value="1" />
+          </label>
+          <label>
+            Off
+            <input class="display-value-input" type="radio" name="radio" value="0" />
+          </label>
+        </div>
+        <div class="display-gap">
+          <p>Adjust Gap</p>
+          <input class="display-gap-input" type="range" min="0" max="20" value="10" step="0.1" />
+        </div>
+        <div class="display-log">
+          <div class="display-log-title">
+            <p>Sorting information</p>
+            <button class="display-log-btn">Clear</button>
+          </div>
+          <div class="display-log-content"><hr /></div>
+        </div>
       </div>
     </div>
   </body>
